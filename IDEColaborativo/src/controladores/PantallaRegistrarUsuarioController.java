@@ -17,6 +17,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
@@ -93,7 +95,8 @@ public class PantallaRegistrarUsuarioController implements Initializable {
             Registry registry = LocateRegistry.getRegistry(controlador.getDireccionIP());
             stub = (IProgramador) registry.lookup("AdministrarUsuarios");
         } catch (RemoteException | NotBoundException ex) {
-            System.out.println(ex.getMessage());
+            Logger.getLogger(PantallaRegistrarUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+            mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeNoConexion"));
         }
     }
     
@@ -158,6 +161,7 @@ public class PantallaRegistrarUsuarioController implements Initializable {
 
                         }
                     } catch (RemoteException | java.lang.NullPointerException ex) {
+                        Logger.getLogger(PantallaRegistrarUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
                         mensajeAlert(recurso.getString(MENSAJE_ATENCION), recurso.getString("mensajeNoConexion"));
                     }
                 } else {

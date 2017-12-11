@@ -27,7 +27,6 @@ import org.json.JSONObject;
  */
 public class ConexionNode {
      private Socket socket;
-     private PantallaPrincipalController controlador;
      private PantallaInvitadoController controladorInvitado;
      private PantallaHostController controladorHost;
 
@@ -36,9 +35,8 @@ public class ConexionNode {
       * @param controlador Controlador para poder manipular la pantalla principal
       */
     public ConexionNode(PantallaPrincipalController controlador){
-        this.controlador = controlador;
          try {
-             socket = IO.socket("http://"+controlador.getDireccionIP()+":9000");
+             socket = IO.socket("http://"+controlador.getDireccionIP()+":"+controlador.getPuerto());
              socket.on("colaboradorNoEncontrado", (Object... os) -> {
                  Platform.runLater(() -> {
                      invitacionErronea();

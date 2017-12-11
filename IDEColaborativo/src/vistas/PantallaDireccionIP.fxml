@@ -6,10 +6,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="199.0" prefWidth="280.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.PantallaDireccionIPController">
+<AnchorPane id="AnchorPane" onKeyTyped="#validarPuerto" prefHeight="248.0" prefWidth="280.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.PantallaDireccionIPController">
    <children>
-      <JFXButton fx:id="botonGuardar" layoutX="186.0" layoutY="154.0" onAction="#guardarIP" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: #4682B4;" text="Guardar" />
-      <JFXButton fx:id="botonCancelar" layoutX="98.0" layoutY="154.0" onAction="#cancelar" style="-fx-background-color: #C0C0C0;" text="Cancelar" />
+      <JFXButton fx:id="botonGuardar" layoutX="184.0" layoutY="196.0" onAction="#guardarIP" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: #4682B4;" text="Guardar" />
+      <JFXButton fx:id="botonCancelar" layoutX="96.0" layoutY="196.0" onAction="#cancelar" style="-fx-background-color: #C0C0C0;" text="Cancelar" />
       <Label fx:id="etiquetaIP" layoutX="14.0" layoutY="14.0" text="Direccion IP">
          <font>
             <Font size="16.0" />
@@ -34,5 +34,7 @@
             <Font size="24.0" />
          </font>
       </Label>
+      <Label fx:id="etiquetaPuerto" layoutX="14.0" layoutY="131.0" text="Puerto servidor:" />
+      <JFXTextField fx:id="campoTextoPuerto" layoutX="122.0" layoutY="118.0" onKeyTyped="#validarPuerto" prefHeight="26.0" prefWidth="52.0" />
    </children>
 </AnchorPane>

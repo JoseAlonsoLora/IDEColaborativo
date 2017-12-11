@@ -66,8 +66,9 @@ public class PantallaIniciarSesionController implements Initializable {
         configurarIdioma();
     }
 
-     /**
-     * Da valor al controlador para poder manipular componentes de la pantalla principal
+    /**
+     * Da valor al controlador para poder manipular componentes de la pantalla
+     * principal
      *
      * @param controlador Instancia del controlador
      */
@@ -78,6 +79,7 @@ public class PantallaIniciarSesionController implements Initializable {
 
     /**
      * Dar valor al stage para poder manipular la pantalla iniciar sesión
+     *
      * @param stagePantallaIniciarSesion Stage de la instancia actual
      */
     public void setStagePantallaIniciarSesion(Stage stagePantallaIniciarSesion) {
@@ -95,7 +97,8 @@ public class PantallaIniciarSesionController implements Initializable {
             Registry registry = LocateRegistry.getRegistry(controlador.getDireccionIP());
             stub = (IProgramador) registry.lookup("AdministrarUsuarios");
         } catch (RemoteException | NotBoundException ex) {
-            System.out.println(ex.getMessage());
+             Logger.getLogger(PantallaIniciarSesionController.class.getName()).log(Level.SEVERE, null, ex);
+             mensajeAlert(recurso.getString(mensajeAtencion), recurso.getString("mensajeNoConexion"));
         }
     }
 
@@ -154,6 +157,7 @@ public class PantallaIniciarSesionController implements Initializable {
                         break;
                 }
             } catch (RemoteException | java.lang.NullPointerException ex) {
+                Logger.getLogger(PantallaIniciarSesionController.class.getName()).log(Level.SEVERE, null, ex);
                 mensajeAlert(recurso.getString(mensajeAtencion), recurso.getString("mensajeNoConexion"));
             }
         }
@@ -162,6 +166,7 @@ public class PantallaIniciarSesionController implements Initializable {
 
     /**
      * Evento para mostrar la pantalla de registrar usuario
+     *
      * @param event Clic del usuario
      */
     @FXML
@@ -172,6 +177,7 @@ public class PantallaIniciarSesionController implements Initializable {
 
     /**
      * Encripta una cadena con el algoritmo SAH2
+     *
      * @param string Cadena que será encriptada
      * @return Cadena encriptada
      */

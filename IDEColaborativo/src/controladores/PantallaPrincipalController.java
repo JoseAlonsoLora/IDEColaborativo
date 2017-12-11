@@ -134,6 +134,7 @@ public class PantallaPrincipalController implements Initializable {
     private MenuItem botonConfigurarIP;
 
     private String direccionIP;
+    private String puerto;
 
     /**
      * Initializes the controller class.
@@ -158,6 +159,24 @@ public class PantallaPrincipalController implements Initializable {
         handlerTablaProyectos(tablaProyectos, tabsAbiertos, tablaArchivos, false);
 
     }
+
+    /**
+     * Regresa el puerto del servidor de NodeJS
+     * @return Puerto del servidor
+     */
+    public String getPuerto() {
+        return puerto;
+    }
+
+    /**
+     * Da valor al puerto del servidor
+     * @param puerto Puerto del servidor de NodeJS
+     */
+    public void setPuerto(String puerto) {
+        this.puerto = puerto;
+    }
+    
+    
 
     /**
      * Regresa TabPane donde se encuentran los archivos abiertos
@@ -275,7 +294,8 @@ public class PantallaPrincipalController implements Initializable {
             Registry registry = LocateRegistry.getRegistry(direccionIP);
             stub = (IProgramador) registry.lookup("AdministrarUsuarios");
         } catch (RemoteException | NotBoundException ex) {
-            System.out.println(ex.getMessage());
+            mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeNoConexion"));
+            Logger.getLogger(PantallaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -10,6 +10,8 @@ import com.jfoenix.controls.JFXTextField;
 import idecolaborativo.IDEColaborativo;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,7 +22,7 @@ import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
- * 
+ *
  * @author Alonso Lora
  * @author Raymundo Pérez
  */
@@ -46,9 +48,14 @@ public class PantallaDireccionIPController implements Initializable {
     private Stage stagePantallaDireccionIP;
 
     private ResourceBundle recurso;
+    @FXML
+    private Label etiquetaPuerto;
+    @FXML
+    private JFXTextField campoTextoPuerto;
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -65,10 +72,12 @@ public class PantallaDireccionIPController implements Initializable {
         etiquetaIP.setText(recurso.getString("etDireccionIP"));
         botonCancelar.setText(recurso.getString("btCancelar"));
         botonGuardar.setText(recurso.getString("btGuardar"));
+        etiquetaPuerto.setText(recurso.getString("etPuertoServidor"));
     }
 
-     /**
-     * Da valor al controlador para poder manipular componentes de la pantalla principal
+    /**
+     * Da valor al controlador para poder manipular componentes de la pantalla
+     * principal
      *
      * @param controlador Instancia del controlador
      */
@@ -78,6 +87,7 @@ public class PantallaDireccionIPController implements Initializable {
 
     /**
      * Dar valor al stage para poder manipular la pantalla direccion Ip
+     *
      * @param stagePantallaDireccionIP Stage de la instancia actual
      */
     public void setStagePantallaDireccionIP(Stage stagePantallaDireccionIP) {
@@ -89,25 +99,33 @@ public class PantallaDireccionIPController implements Initializable {
 
     /**
      * Guarda la IP de servidor
+     *
      * @param event Clic del usuario
      */
     @FXML
     private void guardarIP(ActionEvent event) {
         StringBuilder direccionIP = new StringBuilder();
         if (campoTextoIP1.getText().isEmpty() || campoTextoIP2.getText().isEmpty()
-                || campoTextoIP3.getText().isEmpty() || campoTextoIP4.getText().isEmpty()) {         
+                || campoTextoIP3.getText().isEmpty() || campoTextoIP4.getText().isEmpty() || campoTextoPuerto.getText().isEmpty()) {
             IDEColaborativo.mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeCamposVacios"));
         } else {
-            direccionIP.append(campoTextoIP1.getText()).append(".").append(campoTextoIP2.getText())
-                    .append(".").append(campoTextoIP3.getText()).append(".").append(campoTextoIP4.getText());
-            controlador.setDireccionIP(direccionIP.toString());
-            controlador.hacerVisiblePantallaprincipal();
-            stagePantallaDireccionIP.close();
+            if (validarIP() && validarEntradaPuerto()) {
+                direccionIP.append(campoTextoIP1.getText()).append(".").append(campoTextoIP2.getText())
+                        .append(".").append(campoTextoIP3.getText()).append(".").append(campoTextoIP4.getText());
+                controlador.setDireccionIP(direccionIP.toString());
+                controlador.setPuerto(campoTextoPuerto.getText());
+                controlador.hacerVisiblePantallaprincipal();
+                stagePantallaDireccionIP.close();
+            } else {
+                IDEColaborativo.mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeDatosInvalidos"));
+            }
+
         }
     }
 
     /**
      * Evento para salir de la pantalla dirección IP
+     *
      * @param event Clic del usuario
      */
     @FXML
@@ -118,6 +136,7 @@ public class PantallaDireccionIPController implements Initializable {
 
     /**
      * Valida que solo pueda ingresar números
+     *
      * @param event Presión de una tecla
      */
     @FXML
@@ -125,6 +144,41 @@ public class PantallaDireccionIPController implements Initializable {
         int limiteCaracteres = 3;
         char digito = event.getCharacter().charAt(0);
         if ((digito < 48 || digito > 57) || ((JFXTextField) event.getSource()).getText().length() >= limiteCaracteres) {
+            event.consume();
+        }
+    }
+
+    public boolean validarEntradaPuerto() {
+        boolean esPuertoValido = false;
+        try {
+        Integer puerto = Integer.valueOf(campoTextoPuerto.getText());
+        esPuertoValido = (puerto>1023 && puerto<65535);
+        } catch (NumberFormatException ex) {
+            Logger.getLogger(PantallaDireccionIPController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return esPuertoValido;
+    }
+
+    public boolean validarIP() {
+        boolean esIPValida = false;
+        try {
+            Integer primerOcteto = Integer.valueOf(campoTextoIP1.getText());
+            Integer segundoOcteto = Integer.valueOf(campoTextoIP2.getText());
+            Integer tercerOcteto = Integer.valueOf(campoTextoIP3.getText());
+            Integer cuartoOcteto = Integer.valueOf(campoTextoIP4.getText());
+            esIPValida = (primerOcteto >= 0 && primerOcteto <= 255) && (segundoOcteto >= 0 && segundoOcteto <= 255)
+                    && (tercerOcteto >= 0 && tercerOcteto <= 255) && (cuartoOcteto >= 0 && cuartoOcteto <= 255);
+        } catch (NumberFormatException ex) {
+            Logger.getLogger(PantallaDireccionIPController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return esIPValida;
+    }
+
+    @FXML
+    private void validarPuerto(KeyEvent event) {
+        char digito = event.getCharacter().charAt(0);
+        if (digito < 48 || digito > 57) {
             event.consume();
         }
     }

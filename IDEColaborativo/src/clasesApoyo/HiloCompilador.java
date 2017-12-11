@@ -57,7 +57,7 @@ public class HiloCompilador extends Thread{
                     }
                     process.destroy();
                 } catch (IOException e) {
-                    System.err.println("exception: " + e.getMessage());
+                     Logger.getLogger(Archivo.class.getName()).log(Level.SEVERE, null, e);
                 }
             }
         
