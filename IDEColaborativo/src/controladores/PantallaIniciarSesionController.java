@@ -74,7 +74,6 @@ public class PantallaIniciarSesionController implements Initializable {
      */
     public void setControlador(PantallaPrincipalController controlador) {
         this.controlador = controlador;
-        inicializarRegistro();
     }
 
     /**
@@ -91,15 +90,13 @@ public class PantallaIniciarSesionController implements Initializable {
 
     /**
      * Conecta con el servidor RMI
+     *
+     * @throws RemoteException Cuando no hay conexión con el servidor
+     * @throws NotBoundException
      */
-    public void inicializarRegistro() {
-        try {
-            Registry registry = LocateRegistry.getRegistry(controlador.getDireccionIP());
-            stub = (IProgramador) registry.lookup("AdministrarUsuarios");
-        } catch (RemoteException | NotBoundException ex) {
-             Logger.getLogger(PantallaIniciarSesionController.class.getName()).log(Level.SEVERE, null, ex);
-             mensajeAlert(recurso.getString(mensajeAtencion), recurso.getString("mensajeNoConexion"));
-        }
+    public void inicializarRegistro() throws RemoteException, NotBoundException {
+        Registry registry = LocateRegistry.getRegistry(controlador.getDireccionIP());
+        stub = (IProgramador) registry.lookup("AdministrarUsuarios");
     }
 
     /**
@@ -136,9 +133,11 @@ public class PantallaIniciarSesionController implements Initializable {
         if (campoTextoNombreUsuario.getText().isEmpty() || campoTextoContraseña.getText().isEmpty()) {
             mensajeAlert(recurso.getString(mensajeAtencion), recurso.getString("mensajeCamposVacios"));
         } else {
+
             programador.setNombreUsuario(campoTextoNombreUsuario.getText());
             programador.setContraseña(makeHash(campoTextoContraseña.getText()));
             try {
+                inicializarRegistro();
                 switch (stub.iniciarSesion(programador)) {
                     case DatosValidos:
                         ConexionNode conexionNode = new ConexionNode(controlador);
@@ -156,10 +155,11 @@ public class PantallaIniciarSesionController implements Initializable {
                         mensajeAlert(recurso.getString(mensajeAtencion), recurso.getString("mensajeSesionIniciada"));
                         break;
                 }
-            } catch (RemoteException | java.lang.NullPointerException ex) {
+            } catch (RemoteException | java.lang.NullPointerException | NotBoundException ex) {
                 Logger.getLogger(PantallaIniciarSesionController.class.getName()).log(Level.SEVERE, null, ex);
                 mensajeAlert(recurso.getString(mensajeAtencion), recurso.getString("mensajeNoConexion"));
             }
+
         }
 
     }

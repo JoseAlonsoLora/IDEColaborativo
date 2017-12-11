@@ -68,6 +68,7 @@ public class PantallaRegistrarUsuarioController implements Initializable {
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -76,32 +77,30 @@ public class PantallaRegistrarUsuarioController implements Initializable {
         this.recurso = rb;
         configurarIdioma();
     }
-    
+
     /**
-     * Da valor al controlador para poder manipular componentes de la pantalla principal
+     * Da valor al controlador para poder manipular componentes de la pantalla
+     * principal
      *
      * @param controlador Instancia del controlador
      */
     public void setControlador(PantallaPrincipalController controlador) {
         this.controlador = controlador;
-        inicializarRegistro();
+    }
+
+   /**
+     * Conecta con el servidor RMI
+     * @throws RemoteException Cuando no hay conexión con el servidor
+     * @throws NotBoundException 
+     */
+    public void inicializarRegistro() throws RemoteException, NotBoundException {
+            Registry registry = LocateRegistry.getRegistry(controlador.getDireccionIP());
+            stub = (IProgramador) registry.lookup("AdministrarUsuarios");
     }
 
     /**
-     * Conecta con el servidor RMI
-     */
-    public void inicializarRegistro() {
-        try {
-            Registry registry = LocateRegistry.getRegistry(controlador.getDireccionIP());
-            stub = (IProgramador) registry.lookup("AdministrarUsuarios");
-        } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(PantallaRegistrarUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
-            mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeNoConexion"));
-        }
-    }
-    
-    /**
      * ar valor al stage para poder manipular la pantalla registrar usuario
+     *
      * @param stagePantallaRegistrarUsuario Stage de la instancia actual
      */
     public void setStagePantallaRegistrarUsuario(Stage stagePantallaRegistrarUsuario) {
@@ -136,6 +135,7 @@ public class PantallaRegistrarUsuarioController implements Initializable {
 
     /**
      * Evento para crear una cuenta en el sistema
+     *
      * @param event Clic del usuario
      */
     @FXML
@@ -146,12 +146,13 @@ public class PantallaRegistrarUsuarioController implements Initializable {
         } else {
             if (validarCorreo(campoTextoCorreoElectronico.getText())) {
                 if (datosRegistroValidos()) {
+                    
                     programador.setNombreUsuario(campoTextoNombreUsuario.getText());
                     programador.setContraseña(PantallaIniciarSesionController.makeHash(campoTextoContraseña.getText()));
                     programador.setCorreoElectronico(campoTextoCorreoElectronico.getText());
 
                     try {
-
+                        inicializarRegistro();
                         if (stub.registrarUsuario(programador)) {
                             mensajeAlert(recurso.getString("felicidades"), recurso.getString("mensajeCuentaCreada"));
                             controlador.hacerVisiblePantallaprincipal();
@@ -160,7 +161,7 @@ public class PantallaRegistrarUsuarioController implements Initializable {
                             mensajeAlert(recurso.getString(MENSAJE_ATENCION), recurso.getString("mensajeNombreUsuarioExistente"));
 
                         }
-                    } catch (RemoteException | java.lang.NullPointerException ex) {
+                    } catch (RemoteException | java.lang.NullPointerException | NotBoundException ex) {
                         Logger.getLogger(PantallaRegistrarUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
                         mensajeAlert(recurso.getString(MENSAJE_ATENCION), recurso.getString("mensajeNoConexion"));
                     }
@@ -175,6 +176,7 @@ public class PantallaRegistrarUsuarioController implements Initializable {
 
     /**
      * Valida el tamaño de la cadenas de nombre de usuario y correo electrónico
+     *
      * @return Indica si tienen el tamaño valido
      */
     public boolean datosRegistroValidos() {
@@ -183,6 +185,7 @@ public class PantallaRegistrarUsuarioController implements Initializable {
 
     /**
      * Limita los caracteres del campo de texto nombre de usuario
+     *
      * @param event La presión de un tecla
      */
     @FXML
@@ -195,6 +198,7 @@ public class PantallaRegistrarUsuarioController implements Initializable {
 
     /**
      * Limita los caracteres del campo de texto del correo electrónico
+     *
      * @param event La presión de un tecla
      */
     @FXML
@@ -207,6 +211,7 @@ public class PantallaRegistrarUsuarioController implements Initializable {
 
     /**
      * Valida el formato del correo electrónico
+     *
      * @param correo Correo electrónico que será validado
      * @return Indica si el correo tiene un formato valido
      */

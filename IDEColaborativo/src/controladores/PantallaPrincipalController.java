@@ -143,6 +143,8 @@ public class PantallaPrincipalController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        direccionIP = "";
+        puerto="";
         Proyecto proyecto = new Proyecto();
         proyecto.crearArchivoRutas();
         tabsAbiertos = new ArrayList();
@@ -150,7 +152,6 @@ public class PantallaPrincipalController implements Initializable {
         etiquetaNombreUsuario.setVisible(false);
         cerrarSesion.setVisible(false);
         recurso = rb;
-        direccionIP = "localhost";
         etiquetaNombreUsuario.setText("");
         root = new TreeItem<>(recurso.getString("etProyectos"));
         configurarIdioma();
@@ -286,17 +287,14 @@ public class PantallaPrincipalController implements Initializable {
         });
     }
 
-    /**
-     * Se conecta con el servidor RMI
+   /**
+     * Conecta con el servidor RMI
+     * @throws RemoteException Cuando no hay conexión con el servidor
+     * @throws NotBoundException 
      */
-    public void inicializarRegistro() {
-        try {
+    public void inicializarRegistro() throws RemoteException, NotBoundException {
             Registry registry = LocateRegistry.getRegistry(direccionIP);
             stub = (IProgramador) registry.lookup("AdministrarUsuarios");
-        } catch (RemoteException | NotBoundException ex) {
-            mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeNoConexion"));
-            Logger.getLogger(PantallaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     /**
@@ -467,8 +465,8 @@ public class PantallaPrincipalController implements Initializable {
      */
     @FXML
     private void cerrarSesion(ActionEvent event) {
-        inicializarRegistro();
         try {
+            inicializarRegistro();
             stub.cerrarSesion(etiquetaNombreUsuario.getText());
             socket.emit("cerrarSesion", etiquetaNombreUsuario.getText());
             iconoSesionIniciada.setVisible(false);
@@ -477,7 +475,7 @@ public class PantallaPrincipalController implements Initializable {
             botonConfigurarIP.setVisible(true);
             cerrarSesion.setVisible(false);
             iniciarSesion.setVisible(true);
-        } catch (RemoteException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(PantallaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
