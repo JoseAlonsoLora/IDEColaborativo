@@ -26,6 +26,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
@@ -61,7 +62,8 @@ public class PantallaInvitadoController implements Initializable {
     private TreeItem<String> root;
     private ArrayList<MyTab> tabsAbiertosInvitado;
     private ResourceBundle recurso;
-    private static final String MENSAJE_ATENCION = "atencion";
+    @FXML
+    private Tooltip etiquetaTerminarSesion;
 
     /**
      * Da valor al proyecto que será utilazado en la sesión colaborativa
@@ -103,6 +105,7 @@ public class PantallaInvitadoController implements Initializable {
         recurso = rb;
         root = new TreeItem<>(recurso.getString("etProyectos"));
         tabsAbiertosInvitado = new ArrayList();
+        etiquetaTerminarSesion.setText(recurso.getString("etTerminarSesion"));
     }
 
     /**
@@ -173,7 +176,7 @@ public class PantallaInvitadoController implements Initializable {
     public void finalizarSesion() {
         stagePantallaInvitado.close();
         controlador.hacerVisiblePantallaprincipal();
-        mensajeAlert(recurso.getString(MENSAJE_ATENCION), recurso.getString("mensajeSesionTerminada"));
+        mensajeAlert(recurso.getString("mensajeSesionTerminada"));
         controlador.getSocket().emit("terminarSesion");
     }
 
@@ -229,7 +232,7 @@ public class PantallaInvitadoController implements Initializable {
      * Muestra el resultado de la compilación de un archivo
      */
     public void mostrarMensajeCompilacionExitosa() {
-        mensajeAlert(recurso.getString("felicidades"), recurso.getString("mensajeCompilacionExitosa"));
+        mensajeAlert(recurso.getString("mensajeCompilacionExitosa"));
     }
 
     /**
@@ -245,7 +248,7 @@ public class PantallaInvitadoController implements Initializable {
      * @param resultado Resultaso de la ejecución
      */
     public void mostrarResultadoEjecucion(String resultado) {
-        mensajeAlert(recurso.getString("mensajeResultadoEjecucion"), resultado);
+        mensajeAlert(resultado);
     }
 
     /**

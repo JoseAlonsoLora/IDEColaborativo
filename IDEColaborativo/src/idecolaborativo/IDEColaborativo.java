@@ -179,9 +179,9 @@ public class IDEColaborativo extends Application {
      * @param encabezado Encabezado del alert
      * @param mensaje Mensaje del alert
      */
-    public static void mensajeAlert(String encabezado, String mensaje) {
+    public static void mensajeAlert(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(encabezado);
+        alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.show();
     }

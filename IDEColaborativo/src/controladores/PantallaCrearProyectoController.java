@@ -57,7 +57,6 @@ public class PantallaCrearProyectoController implements Initializable {
     @FXML
     private JFXRadioButton radioCSharp;
     
-    private final String mensajeAtencion = "atencion";
     
     private Stage stagePantallaCrearProyecto;
 
@@ -118,7 +117,7 @@ public class PantallaCrearProyectoController implements Initializable {
         fileChooser.setInitialFileName(campoTextoNombreProyecto.getText());
         File file = fileChooser.showSaveDialog(null);
         if (file == null) {
-            mensajeAlert(recurso.getString(mensajeAtencion), recurso.getString("mensajeRuta"));
+            mensajeAlert(recurso.getString("mensajeRuta"));
         } else {
             campoTextoRuta.setText(file.getPath());
             campoTextoNombreProyecto.setText(file.getName());
@@ -165,7 +164,7 @@ public class PantallaCrearProyectoController implements Initializable {
             stagePantallaCrearProyecto.close();
 
         } else {
-            mensajeAlert(recurso.getString(mensajeAtencion), recurso.getString("mensajeCamposVacios"));
+            mensajeAlert(recurso.getString("mensajeCamposVacios"));
         }
     }
 
@@ -180,7 +179,7 @@ public class PantallaCrearProyectoController implements Initializable {
         proyecto.setRutaProyecto(campoTextoRuta.getText());
         proyecto.setLenguaje(lenguaje);
         if (!proyecto.crearProyecto()) {
-            mensajeAlert(recurso.getString(mensajeAtencion), recurso.getString("mensajeProyectoNoCreado"));
+            mensajeAlert(recurso.getString("mensajeProyectoNoCreado"));
         }
         
         return proyecto;

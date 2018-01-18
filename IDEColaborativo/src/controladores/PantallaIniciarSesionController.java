@@ -24,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import modelo.negocio.InformacionInicioSesion;
 import modelo.negocio.Programador;
 
 /**
@@ -52,7 +53,6 @@ public class PantallaIniciarSesionController implements Initializable {
     @FXML
     private JFXPasswordField campoTextoContraseña;
     private IProgramador stub;
-    private final String mensajeAtencion = "atencion";
     private Stage stagePantallaIniciarSesion;
 
     /**
@@ -131,14 +131,15 @@ public class PantallaIniciarSesionController implements Initializable {
     private void botonIniciarSesion(ActionEvent event) {
         Programador programador = new Programador();
         if (campoTextoNombreUsuario.getText().isEmpty() || campoTextoContraseña.getText().isEmpty()) {
-            mensajeAlert(recurso.getString(mensajeAtencion), recurso.getString("mensajeCamposVacios"));
+            mensajeAlert(recurso.getString("mensajeCamposVacios"));
         } else {
 
             programador.setNombreUsuario(campoTextoNombreUsuario.getText());
             programador.setContraseña(makeHash(campoTextoContraseña.getText()));
-            try {
-                inicializarRegistro();
-                switch (stub.iniciarSesion(programador)) {
+           // try {
+                //inicializarRegistro();
+                //switch (stub.iniciarSesion(programador)) {
+                switch (InformacionInicioSesion.DatosValidos) {
                     case DatosValidos:
                         ConexionNode conexionNode = new ConexionNode(controlador);
                         conexionNode.getSocket().emit("agregarNombre", campoTextoNombreUsuario.getText());
@@ -149,16 +150,16 @@ public class PantallaIniciarSesionController implements Initializable {
                         stagePantallaIniciarSesion.close();
                         break;
                     case DatosInvalidos:
-                        mensajeAlert(recurso.getString(mensajeAtencion), recurso.getString("mensajeDatosIncorrectos"));
+                        mensajeAlert(recurso.getString("mensajeDatosIncorrectos"));
                         break;
                     case SesionIniciada:
-                        mensajeAlert(recurso.getString(mensajeAtencion), recurso.getString("mensajeSesionIniciada"));
+                        mensajeAlert(recurso.getString("mensajeSesionIniciada"));
                         break;
                 }
-            } catch (RemoteException | java.lang.NullPointerException | NotBoundException ex) {
-                Logger.getLogger(PantallaIniciarSesionController.class.getName()).log(Level.SEVERE, null, ex);
-                mensajeAlert(recurso.getString(mensajeAtencion), recurso.getString("mensajeNoConexion"));
-            }
+//            } catch (RemoteException | java.lang.NullPointerException | NotBoundException ex) {
+//                Logger.getLogger(PantallaIniciarSesionController.class.getName()).log(Level.SEVERE, null, ex);
+//                mensajeAlert(recurso.getString("mensajeNoConexion"));
+//            }
 
         }
 

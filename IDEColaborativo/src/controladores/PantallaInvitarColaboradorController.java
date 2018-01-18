@@ -152,7 +152,7 @@ public class PantallaInvitarColaboradorController implements Initializable {
             socket.emit("invitarColaborador", campoTextoNombreColaborador.getText(), crearObjetoJSON(proyecto));
 
         } else {
-            mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeCamposVacios"));
+            mensajeAlert(recurso.getString("mensajeCamposVacios"));
         }
     }
 
@@ -178,14 +178,14 @@ public class PantallaInvitarColaboradorController implements Initializable {
      * Muestra el mensaje donde indica que el colaborador no existe
      */
     public static void invitacionErronea() {
-        mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeColaboradorNoEncontrado"));
+        mensajeAlert(recurso.getString("mensajeColaboradorNoEncontrado"));
     }
 
     /**
      * Muestra el mensaje donde indica que no te puedes invitar a ti mismo
      */
     public static void mensajeRecursivo() {
-        mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeRecursivo"));
+        mensajeAlert(recurso.getString("mensajeRecursivo"));
     }
 
     /**

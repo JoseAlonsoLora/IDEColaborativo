@@ -4,8 +4,10 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import de.jensd.fx.glyphs.octicons.OctIconView?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -22,21 +24,45 @@
          <graphic>
             <MaterialDesignIconView fill="#4e238c" glyphName="FLOPPY" size="20" />
          </graphic>
+         <tooltip>
+            <Tooltip fx:id="etiquetaGuardar" text="Empty Tooltip" />
+         </tooltip>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
       <JFXButton fx:id="botonCompilar" layoutX="394.0" layoutY="10.0" onAction="#compilar" prefHeight="35.0" prefWidth="40.0" ripplerFill="#7c7c7c" text="">
          <graphic>
             <OctIconView fill="TEAL" glyphName="TOOLS" size="17" />
          </graphic>
+         <tooltip>
+            <Tooltip fx:id="etiquetaCompilar" text="Empty Tooltip" />
+         </tooltip>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
       <JFXButton fx:id="botonEjecutar" layoutX="442.0" layoutY="11.0" onAction="#ejecutar" ripplerFill="#7c7c7c" text="">
          <graphic>
             <FontAwesomeIconView fill="#19bf45" glyphName="PLAY_CIRCLE" size="22" />
          </graphic>
+         <tooltip>
+            <Tooltip fx:id="etiquetaEjecutar" text="Empty Tooltip" />
+         </tooltip>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
       <JFXButton fx:id="botonEliminar" layoutX="219.0" layoutY="12.0" onAction="#eliminar" ripplerFill="#7c7c7c" text="">
          <graphic>
             <FontAwesomeIconView fill="#5e5353" glyphName="TRASH" size="21" />
          </graphic>
+         <tooltip>
+            <Tooltip fx:id="etiquetaEliminar" text="Empty Tooltip" />
+         </tooltip>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
       <AnchorPane layoutX="207.0" layoutY="53.0" prefHeight="576.0" prefWidth="776.0" style="-fx-background-color: #ffffff;">
          <children>
@@ -47,16 +73,34 @@
          <graphic>
             <MaterialDesignIconView fill="#e4b06c" glyphName="FOLDER_PLUS" size="23" />
          </graphic>
+         <tooltip>
+            <Tooltip fx:id="etiquetaNuevoPaquete" text="Empty Tooltip" />
+         </tooltip>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
       <JFXButton fx:id="botonAgregarArchivo" layoutX="305.0" layoutY="13.0" onAction="#agregarArchivo" ripplerFill="#7c7c7c" text="">
          <graphic>
             <MaterialDesignIconView fill="#575050" glyphName="NOTE_PLUS" size="20" />
          </graphic>
+         <tooltip>
+            <Tooltip fx:id="etiquetaNuevoArchivo" text="Empty Tooltip" />
+         </tooltip>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
       <JFXButton fx:id="botonTerminarSesion" layoutX="933.0" layoutY="12.0" onAction="#terminarSesion" ripplerFill="#7c7c7c" text="">
          <graphic>
             <FontAwesomeIconView fill="#20a11e" glyphName="SIGN_OUT" size="20" />
          </graphic>
+         <tooltip>
+            <Tooltip fx:id="etiquetaTerminarSesion" text="Empty Tooltip" />
+         </tooltip>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
    </children>
 </AnchorPane>

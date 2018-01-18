@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="277.0" prefWidth="523.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.PantallaCrearProyectoController">
+<AnchorPane id="AnchorPane" prefHeight="277.0" prefWidth="523.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.PantallaCrearProyectoController">
    <children>
       <Label fx:id="etiquetaEligeProyecto" layoutX="14.0" layoutY="14.0" text="Elige tipo de proyecto" />
       <JFXRadioButton fx:id="radioJava" layoutX="14.0" layoutY="43.0" text="Java">
@@ -44,9 +44,9 @@
       <Separator layoutX="14.0" layoutY="29.0" prefHeight="8.0" prefWidth="143.0" />
       <Label fx:id="etiquetaRuta" layoutX="118.0" layoutY="159.0" text="Ruta:" />
       <JFXTextField fx:id="campoTextoRuta" editable="false" focusColor="#cdc7c7" layoutX="168.0" layoutY="155.0" prefHeight="24.0" prefWidth="209.0" />
-      <JFXButton fx:id="botonExaminar" layoutX="403.0" layoutY="162.0" onAction="#seleccionarRuta" style="-fx-background-color: #C0C0C0;" text="Examinar" />
+      <JFXButton fx:id="botonExaminar" layoutX="403.0" layoutY="162.0" onAction="#seleccionarRuta" style="-fx-background-color: #C0C0C0;" text="Examinar" AnchorPane.leftAnchor="403.0" AnchorPane.rightAnchor="44.0" />
       <Separator layoutX="14.0" layoutY="205.0" prefHeight="8.0" prefWidth="466.0" />
-      <JFXButton fx:id="botonCrear" layoutX="429.0" layoutY="237.0" onAction="#botonCrearProyecto" style="-fx-background-color: #C0C0C0;" text="Crear" />
-      <JFXButton fx:id="botonCancelar" layoutX="329.0" layoutY="237.0" onAction="#botonCancelar" style="-fx-background-color: #C0C0C0;" text="Cancelar" />
+      <JFXButton fx:id="botonCrear" layoutX="405.0" layoutY="237.0" onAction="#botonCrearProyecto" prefHeight="28.0" prefWidth="76.0" style="-fx-background-color: #4682B4;" text="Crear" />
+      <JFXButton fx:id="botonCancelar" layoutX="314.0" layoutY="237.0" onAction="#botonCancelar" style="-fx-background-color: #C0C0C0;" text="Cancelar" />
    </children>
 </AnchorPane>

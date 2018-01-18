@@ -22,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
@@ -68,6 +69,20 @@ public class PantallaHostController implements Initializable {
     private JFXButton botonAgregarArchivo;
     @FXML
     private JFXButton botonTerminarSesion;
+    @FXML
+    private Tooltip etiquetaGuardar;
+    @FXML
+    private Tooltip etiquetaCompilar;
+    @FXML
+    private Tooltip etiquetaEjecutar;
+    @FXML
+    private Tooltip etiquetaEliminar;
+    @FXML
+    private Tooltip etiquetaNuevoPaquete;
+    @FXML
+    private Tooltip etiquetaNuevoArchivo;
+    @FXML
+    private Tooltip etiquetaTerminarSesion;
 
     /**
      * Initializes the controller class.
@@ -80,6 +95,7 @@ public class PantallaHostController implements Initializable {
         recurso = rb;
         root = new TreeItem<>(recurso.getString("etProyectos"));
         tabsAbiertosHost = new ArrayList();
+        configurarIdioma();
     }
 
     /**
@@ -114,6 +130,19 @@ public class PantallaHostController implements Initializable {
             controlador.hacerVisiblePantallaprincipal();
             controlador.getSocket().emit("terminarSesionHost");
         });
+    }
+    
+    /**
+     * Configura el idioma de todas etiquetas de la pantalla
+     */
+    public void configurarIdioma(){
+        etiquetaCompilar.setText(recurso.getString("etComplilar"));
+        etiquetaEjecutar.setText(recurso.getString("btEjecutar"));
+        etiquetaEliminar.setText(recurso.getString("etEliminar"));
+        etiquetaGuardar.setText(recurso.getString("btGuardar"));
+        etiquetaNuevoArchivo.setText(recurso.getString("etNuevoArchivo"));
+        etiquetaNuevoPaquete.setText(recurso.getString("etNuevoPaquete"));
+        etiquetaTerminarSesion.setText(recurso.getString("etTerminarSesion"));
     }
 
     /**
@@ -181,7 +210,7 @@ public class PantallaHostController implements Initializable {
      * Muestra un mensaje cuando el invitado finaliza la sesión colaborativa
      */
     public void colaboradorDesconectado() {
-        mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeColaboradorDesconectado"));
+        mensajeAlert(recurso.getString("mensajeColaboradorDesconectado"));
     }
 
     /**

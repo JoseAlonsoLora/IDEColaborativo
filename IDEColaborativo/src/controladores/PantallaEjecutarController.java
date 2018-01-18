@@ -134,7 +134,7 @@ public class PantallaEjecutarController implements Initializable {
             if (validarPatronParametros(campoTextoParametros.getText())) {
                 areaTextoResultadoEjecucion.setText(archivo.ejecutarArchivo(archivo, campoTextoParametros.getText()));
             } else {
-                mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeParametrosInvalidos"));
+                mensajeAlert(recurso.getString("mensajeParametrosInvalidos"));
             }
 
         } else {
@@ -154,7 +154,7 @@ public class PantallaEjecutarController implements Initializable {
                 areaTextoResultadoEjecucion.setText(resultadoEjecucion);
                 controlador.getSocket().emit("resultadoEjecucion", resultadoEjecucion);
             } else {
-                mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeParametrosInvalidos"));
+                mensajeAlert(recurso.getString("mensajeParametrosInvalidos"));
             }
 
         } else {

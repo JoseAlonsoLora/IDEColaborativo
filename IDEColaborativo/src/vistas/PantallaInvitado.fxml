@@ -4,6 +4,7 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -21,6 +22,9 @@
          <graphic>
             <FontAwesomeIconView fill="#20a11e" glyphName="SIGN_OUT" size="20" />
          </graphic>
+         <tooltip>
+            <Tooltip fx:id="etiquetaTerminarSesion" text="Empty Tooltip" />
+         </tooltip>
       </JFXButton>
    </children>
 </AnchorPane>

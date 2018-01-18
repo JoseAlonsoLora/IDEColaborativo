@@ -62,7 +62,6 @@ public class PantallaRegistrarUsuarioController implements Initializable {
 
     private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    private static final String MENSAJE_ATENCION = "atencion";
 
     private Stage stagePantallaRegistrarUsuario;
 
@@ -142,7 +141,7 @@ public class PantallaRegistrarUsuarioController implements Initializable {
     private void botonCrearCuenta(ActionEvent event) {
         Programador programador = new Programador();
         if (campoTextoContraseña.getText().isEmpty() || campoTextoCorreoElectronico.getText().isEmpty() || campoTextoNombreUsuario.getText().isEmpty()) {
-            mensajeAlert(recurso.getString(MENSAJE_ATENCION), recurso.getString("mensajeCamposVacios"));
+            mensajeAlert(recurso.getString("mensajeCamposVacios"));
         } else {
             if (validarCorreo(campoTextoCorreoElectronico.getText())) {
                 if (datosRegistroValidos()) {
@@ -154,22 +153,22 @@ public class PantallaRegistrarUsuarioController implements Initializable {
                     try {
                         inicializarRegistro();
                         if (stub.registrarUsuario(programador)) {
-                            mensajeAlert(recurso.getString("felicidades"), recurso.getString("mensajeCuentaCreada"));
+                            mensajeAlert(recurso.getString("mensajeCuentaCreada"));
                             controlador.hacerVisiblePantallaprincipal();
                             stagePantallaRegistrarUsuario.close();
                         } else {
-                            mensajeAlert(recurso.getString(MENSAJE_ATENCION), recurso.getString("mensajeNombreUsuarioExistente"));
+                            mensajeAlert(recurso.getString("mensajeNombreUsuarioExistente"));
 
                         }
                     } catch (RemoteException | java.lang.NullPointerException | NotBoundException ex) {
                         Logger.getLogger(PantallaRegistrarUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
-                        mensajeAlert(recurso.getString(MENSAJE_ATENCION), recurso.getString("mensajeNoConexion"));
+                        mensajeAlert(recurso.getString("mensajeNoConexion"));
                     }
                 } else {
-                    mensajeAlert(recurso.getString(MENSAJE_ATENCION), recurso.getString("mensajeDatosInvalidos"));
+                    mensajeAlert(recurso.getString("mensajeDatosInvalidos"));
                 }
             } else {
-                mensajeAlert(recurso.getString(MENSAJE_ATENCION), recurso.getString("mensajeCorreoInvalido"));
+                mensajeAlert(recurso.getString("mensajeCorreoInvalido"));
             }
         }
     }

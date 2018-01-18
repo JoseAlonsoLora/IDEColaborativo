@@ -107,7 +107,7 @@ public class PantallaDireccionIPController implements Initializable {
         StringBuilder direccionIP = new StringBuilder();
         if (campoTextoIP1.getText().isEmpty() || campoTextoIP2.getText().isEmpty()
                 || campoTextoIP3.getText().isEmpty() || campoTextoIP4.getText().isEmpty() || campoTextoPuerto.getText().isEmpty()) {
-            IDEColaborativo.mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeCamposVacios"));
+            IDEColaborativo.mensajeAlert(recurso.getString("mensajeCamposVacios"));
         } else {
             if (validarIP() && validarEntradaPuerto()) {
                 direccionIP.append(campoTextoIP1.getText()).append(".").append(campoTextoIP2.getText())
@@ -117,7 +117,7 @@ public class PantallaDireccionIPController implements Initializable {
                 controlador.hacerVisiblePantallaprincipal();
                 stagePantallaDireccionIP.close();
             } else {
-                IDEColaborativo.mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeDatosInvalidos"));
+                IDEColaborativo.mensajeAlert(recurso.getString("mensajeDatosInvalidos"));
             }
 
         }

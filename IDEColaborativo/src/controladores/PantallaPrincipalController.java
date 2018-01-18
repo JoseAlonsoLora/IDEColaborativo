@@ -55,6 +55,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
@@ -103,27 +104,12 @@ public class PantallaPrincipalController implements Initializable {
     private TreeTableColumn<String, String> columnaProyectos;
     @FXML
     private TabPane tablaArchivos;
-
-    private ResourceBundle recurso;
-    private PantallaPrincipalController controlador;
-    private ArrayList<MyTab> tabsAbiertos;
-    private TreeItem<String> root;
     @FXML
     private JFXButton botonCompilar;
     @FXML
     private JFXButton botonEjecutar;
     @FXML
     private JFXButton botonInvitarColaborador;
-
-    private Socket socket;
-
-    private ArrayList<Proyecto> proyectos;
-
-    private Stage stagePantallaPrincipal;
-
-    private IProgramador stub;
-
-    private ConexionNode conexionNode;
     @FXML
     private JFXButton botonEliminar;
     @FXML
@@ -132,19 +118,48 @@ public class PantallaPrincipalController implements Initializable {
     private JFXButton botonAgregarArchivo;
     @FXML
     private MenuItem botonConfigurarIP;
-
+    @FXML
+    private Tooltip etiquetaCrearProyecto;
+    @FXML
+    private Tooltip etiquetaGuardar;
+    @FXML
+    private Tooltip etiquetaCompilar;
+    @FXML
+    private Tooltip etiquetaConfiguraciones;
+    @FXML
+    private Tooltip etiquetaInvitar;
+    @FXML
+    private Tooltip etiquetaEliminar;
+    @FXML
+    private Tooltip etiquetaCrearPaquete;
+    @FXML
+    private Tooltip etiquetaCrearArchivo;
+    @FXML
+    private Tooltip etiquetaEjecutar;
+    
+    private ResourceBundle recurso;
+    private PantallaPrincipalController controlador;
+    private ArrayList<MyTab> tabsAbiertos;
+    private TreeItem<String> root;
+    private Socket socket;
+    private ArrayList<Proyecto> proyectos;
+    private Stage stagePantallaPrincipal;
+    private IProgramador stub;
+    private ConexionNode conexionNode;
     private String direccionIP;
     private String puerto;
+    
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         direccionIP = "";
-        puerto="";
+        puerto = "";
         Proyecto proyecto = new Proyecto();
         proyecto.crearArchivoRutas();
         tabsAbiertos = new ArrayList();
@@ -163,6 +178,7 @@ public class PantallaPrincipalController implements Initializable {
 
     /**
      * Regresa el puerto del servidor de NodeJS
+     *
      * @return Puerto del servidor
      */
     public String getPuerto() {
@@ -171,13 +187,12 @@ public class PantallaPrincipalController implements Initializable {
 
     /**
      * Da valor al puerto del servidor
+     *
      * @param puerto Puerto del servidor de NodeJS
      */
     public void setPuerto(String puerto) {
         this.puerto = puerto;
     }
-    
-    
 
     /**
      * Regresa TabPane donde se encuentran los archivos abiertos
@@ -287,14 +302,24 @@ public class PantallaPrincipalController implements Initializable {
         });
     }
 
-   /**
+    /**
+     * Regresa el valor del nodo principal del árbol de proyectos
+     *
+     * @return Nodo principal del árbol de proyectos
+     */
+    public TreeItem<String> getRoot() {
+        return root;
+    }
+
+    /**
      * Conecta con el servidor RMI
+     *
      * @throws RemoteException Cuando no hay conexión con el servidor
-     * @throws NotBoundException 
+     * @throws NotBoundException
      */
     public void inicializarRegistro() throws RemoteException, NotBoundException {
-            Registry registry = LocateRegistry.getRegistry(direccionIP);
-            stub = (IProgramador) registry.lookup("AdministrarUsuarios");
+        Registry registry = LocateRegistry.getRegistry(direccionIP);
+        stub = (IProgramador) registry.lookup("AdministrarUsuarios");
     }
 
     /**
@@ -325,7 +350,7 @@ public class PantallaPrincipalController implements Initializable {
                             } else {
                                 areaCodigo.getCodeArea().setOnKeyTyped((KeyEvent event) -> {
                                     treeItem.setModificado(true);
-                                    
+
                                     socket.emit("escribirCodigo", areaCodigo.getCodeArea().getText(), treeItem.getArchivo().getRuta() + treeItem.getArchivo().getNombreArchivo());
                                 });
                                 socket.emit("abrirTab", crearObjetoJSONArchivo(treeItem.getArchivo()));
@@ -422,7 +447,15 @@ public class PantallaPrincipalController implements Initializable {
         cambiarIdioma.setText(recurso.getString("etCambiarIdioma"));
         cerrarSesion.setText(recurso.getString("btCerrarSesion"));
         botonConfigurarIP.setText(recurso.getString("btConfigurarIP"));
-
+        etiquetaCrearProyecto.setText(recurso.getString("etNuevoProyecto"));
+        etiquetaGuardar.setText(recurso.getString("btGuardar"));
+        etiquetaEliminar.setText(recurso.getString("etEliminar"));
+        etiquetaCrearPaquete.setText(recurso.getString("etNuevoPaquete"));
+        etiquetaCrearArchivo.setText(recurso.getString("etNuevoArchivo"));
+        etiquetaCompilar.setText(recurso.getString("etComplilar"));
+        etiquetaEjecutar.setText(recurso.getString("btEjecutar"));
+        etiquetaInvitar.setText(recurso.getString("btInvitar"));
+        etiquetaConfiguraciones.setText(recurso.getString("etConfiguraciones"));
     }
 
     /**
@@ -519,7 +552,7 @@ public class PantallaPrincipalController implements Initializable {
      * Mensaje donde indica que la invitación fue enviada
      */
     public void invitacionEnviada() {
-        mensajeAlert("", recurso.getString("mensajeInvitacionEnviada"));
+        mensajeAlert(recurso.getString("mensajeInvitacionEnviada"));
     }
 
     /**
@@ -695,7 +728,7 @@ public class PantallaPrincipalController implements Initializable {
         if (resultado.isEmpty()) {
             compilo = true;
             if (!ejecucion) {
-                mensajeAlert(recurso.getString("felicidades"), recurso.getString("mensajeCompilacionExitosa"));
+                mensajeAlert(recurso.getString("mensajeCompilacionExitosa"));
             }
         } else {
             resultadoCompilacion(resultado, recurso);
@@ -717,7 +750,7 @@ public class PantallaPrincipalController implements Initializable {
             compilo = true;
             if (!ejecucion) {
                 socket.emit("mensajeCompilacionExitosa");
-                mensajeAlert(recurso.getString("felicidades"), recurso.getString("mensajeCompilacionExitosa"));
+                mensajeAlert(recurso.getString("mensajeCompilacionExitosa"));
             }
         } else {
             socket.emit("mensajeErrorCompilacion", resultado);
@@ -728,6 +761,7 @@ public class PantallaPrincipalController implements Initializable {
 
     /**
      * Ejecuta un archivo seleccionado
+     *
      * @param event Clic del usuario
      */
     @FXML
@@ -737,8 +771,9 @@ public class PantallaPrincipalController implements Initializable {
 
     /**
      * Ejecuta un archivo seleccionado por el usuario
+     *
      * @param tablaArchivos TabPane donde estan los archivos abiertos
-     * @param esColaborativo Indica si el archivo será ejecutado 
+     * @param esColaborativo Indica si el archivo será ejecutado
      */
     public void ejecutarArchivo(TabPane tablaArchivos, boolean esColaborativo) {
         if (tablaArchivos.getSelectionModel().getSelectedItem() != null) {
@@ -750,9 +785,10 @@ public class PantallaPrincipalController implements Initializable {
 
         }
     }
-    
+
     /**
      * Despliega la pantalla para ejecutar el programa
+     *
      * @param tablaArchivos TabPane donde estan los archivos abiertos
      */
     public void ejecutarLocal(TabPane tablaArchivos) {
@@ -761,9 +797,10 @@ public class PantallaPrincipalController implements Initializable {
             ventanaEjecutar(recurso, tabSeleccionado.getTreeItem().getArchivo(), controlador, false);
         }
     }
-    
+
     /**
      * Despliega la pantalla para ejecutar de manera colaborativa el programa
+     *
      * @param tablaArchivos TabPane donde estan los archivos abiertos
      */
     public void ejecutarColaborativo(TabPane tablaArchivos) {
@@ -772,9 +809,10 @@ public class PantallaPrincipalController implements Initializable {
             ventanaEjecutar(recurso, tabSeleccionado.getTreeItem().getArchivo(), controlador, true);
         }
     }
-    
+
     /**
      * Despliega la pantalla para invitar a un colaborador
+     *
      * @param event Clic del usuario
      */
     @FXML
@@ -783,7 +821,7 @@ public class PantallaPrincipalController implements Initializable {
             stagePantallaPrincipal.hide();
             ventanaInvitarColaborador(recurso, socket, controlador);
         } else {
-            mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeDebesIniciarSesion"));
+            mensajeAlert(recurso.getString("mensajeDebesIniciarSesion"));
         }
     }
 
@@ -803,6 +841,7 @@ public class PantallaPrincipalController implements Initializable {
 
     /**
      * Eliminar un proyecto,carpeta,archivo
+     *
      * @param event Clic del usuario
      */
     @FXML
@@ -812,6 +851,7 @@ public class PantallaPrincipalController implements Initializable {
 
     /**
      * Elimina el elemnto seleccionado del árbol de proyectos
+     *
      * @param tabsAbiertos Tabs abiertos en el TabPane
      * @param tablaProyectos Árbol donde se encuentran los proyectos
      * @param tablaArchivos TabPane para cerrar el Tab
@@ -859,6 +899,7 @@ public class PantallaPrincipalController implements Initializable {
 
     /**
      * Remueve los Tabs abiertos cuando se elimina un proyecto
+     *
      * @param myTreeItemProyecto Proyecto que será eliminado
      * @param tabsAbiertos Tabs abiertos en el TabPane
      * @param tablaArchivos TabPane para cerrar el Tab
@@ -872,9 +913,10 @@ public class PantallaPrincipalController implements Initializable {
             tabsAbiertos.remove(myTab);
         });
     }
-    
+
     /**
      * Remueve los Tabs abiertos cuando se elimina una carpeta
+     *
      * @param rutaCarpeta Ruta de la carpeta que será eliminada
      * @param tabsAbiertos Tabs abiertos en el TabPane
      * @param tablaArchivos TabPane para cerrar el Tab
@@ -890,7 +932,8 @@ public class PantallaPrincipalController implements Initializable {
     }
 
     /**
-     * Crea un arreglo auxiliar para remover Tabs abiertos 
+     * Crea un arreglo auxiliar para remover Tabs abiertos
+     *
      * @param tabsAbiertos Tabs abiertos en el TabPane
      * @return Arreglo auxiliar con los tabs abiertos
      */
@@ -903,7 +946,8 @@ public class PantallaPrincipalController implements Initializable {
     }
 
     /**
-     * Remueve Tabs de archivos 
+     * Remueve Tabs de archivos
+     *
      * @param rutaArchivo Ruta del archivo que será eliminado
      * @param tabsAbiertos Tabs abiertos en el TabPane
      * @param tablaArchivos TabTane donde se cerrará el Tab
@@ -920,6 +964,7 @@ public class PantallaPrincipalController implements Initializable {
 
     /**
      * Agrega un paquete a un proyecto seleccionado
+     *
      * @param event Clic del usuario
      */
     @FXML
@@ -929,6 +974,7 @@ public class PantallaPrincipalController implements Initializable {
 
     /**
      * Agrega al árbol de proyetos una carpeta
+     *
      * @param tablaProyectos Árbol donde se encuentran los proyectos
      * @param recurso Idioma
      * @return MyTreeItemCarpeta para agregarla al de árbol proyectos
@@ -946,7 +992,7 @@ public class PantallaPrincipalController implements Initializable {
                 Optional<String> result = dialog.showAndWait();
                 if (result.isPresent()) {
                     if (treeItem.getNombreCarpetas().contains(result.get())) {
-                        mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajePaqueteExistente"));
+                        mensajeAlert(recurso.getString("mensajePaqueteExistente"));
                     } else {
 
                         Carpeta carpeta = new Carpeta();
@@ -973,6 +1019,7 @@ public class PantallaPrincipalController implements Initializable {
 
     /**
      * Agrega el archivo al árbol de proyectos
+     *
      * @param event Clic del usuario
      */
     @FXML
@@ -982,6 +1029,7 @@ public class PantallaPrincipalController implements Initializable {
 
     /**
      * Agrega al árbol de proyetos un archivo
+     *
      * @param tablaProyectos Árbol donde se encuentran los proyectos
      * @param recurso Idioma
      * @return MyTreeItem para agregarlo al árbol de proyectos
@@ -1005,7 +1053,7 @@ public class PantallaPrincipalController implements Initializable {
             if (result.isPresent()) {
                 String nombreArchivo = result.get();
                 if (nombreArchivo.contains(".") || nombreArchivo.isEmpty()) {
-                    mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeDatosInvalidos"));
+                    mensajeAlert(recurso.getString("mensajeDatosInvalidos"));
                 } else {
                     if (treeItem.getLenguaje().equals("java")) {
                         nombreArchivo += ".java";
@@ -1013,7 +1061,7 @@ public class PantallaPrincipalController implements Initializable {
                         nombreArchivo += ".cpp";
                     }
                     if (treeItem.getNombreArchivos().contains(nombreArchivo)) {
-                        mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeArchivoExistente"));
+                        mensajeAlert(recurso.getString("mensajeArchivoExistente"));
                     } else {
                         Archivo archivo = new Archivo();
                         archivo.setNombreArchivo(nombreArchivo);
@@ -1042,6 +1090,7 @@ public class PantallaPrincipalController implements Initializable {
 
     /**
      * Desplegar la pantalla para configurar la IP del servidor
+     *
      * @param event Clic del usuario
      */
     @FXML

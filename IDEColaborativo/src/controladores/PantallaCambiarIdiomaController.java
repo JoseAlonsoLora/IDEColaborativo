@@ -100,10 +100,11 @@ public class PantallaCambiarIdiomaController implements Initializable {
                 default:
                     break;
             }
+            controlador.getRoot().setValue(recurso.getString("etProyectos"));
             controlador.hacerVisiblePantallaprincipal();
             stagePantallaCambiarIdioma.close();
         } else {
-            mensajeAlert(recurso.getString("atencion"), recurso.getString("mensajeIdioma"));
+            mensajeAlert(recurso.getString("mensajeIdioma"));
         }
 
     }
